@@ -57,6 +57,6 @@ class ItemViewSet(ModelViewSet):
         resource = models.Resource.objects.get(RESOURCE_NAME=serializer.validated_data['resource_name'])
         items = self.loadData(top_tag=resource.top_tag,bottom_tag=resource.bottom_tag,title_cut=resource.title_cut, date_cut=resource.date_cut, url=resource.RESOURCE_URL, name=resource.RESOURCE_NAME)
         models.Items.objects.bulk_create(
-            [models.Items(res_id=resource, link=i['link'], title=i['title'], content=i['content'], news_unix_date=i['news_unix_date'], news_date=i['news_date']) for i in items]
+            [models.Items(res_id=resource, **i) for i in items]
         )
         return Response({'message': 'created'}, status=status.HTTP_201_CREATED)
